@@ -78,7 +78,7 @@ public class App
                         services.callUpdate(creditCard);
                         break;
                     case 2:
-                        System.out.println("Enter the Transaction details such as merchant name,id,amount");
+                        System.out.println("Enter the Transaction details such as Transaction Date,merchant name,id,amount");
                         Transaction transaction=new Transaction();
                         transaction.setTransactionDoneBy(creditCard.getCardNumber());
                         transaction.setTransactionDate(new Date(scanner.next()));
