@@ -67,7 +67,7 @@ public class CreditCardFileRepository implements CreditCardRepository {
         }
         creditCardList.add(creditCard);
         writeIntoFile();
-        logger.log(Level.INFO,creditCard.getCardNumber()+resourceBundle.getString("card.saved"));
+        logger.log(Level.INFO,creditCard.getCardNumber()+" "+resourceBundle.getString("card.saved"));
         System.out.println(creditCard.getCardNumber()+resourceBundle.getString("card.saved"));
     }
 
@@ -83,7 +83,7 @@ public class CreditCardFileRepository implements CreditCardRepository {
         readFromFile();
         CreditCard object=creditCardList.stream().filter(each->each.getCardNumber().equals(creditCardNumber)).findFirst().orElse(null);
         if(object==null) {
-            logger.log(Level.WARNING,creditCardNumber+resourceBundle.getString("card.notExists"));
+           logger.log(Level.WARNING,creditCardNumber+resourceBundle.getString("card.notExists"));
             throw new CreditCardException();
         }
         return object;
@@ -105,7 +105,7 @@ public class CreditCardFileRepository implements CreditCardRepository {
         readFromFile();
         CreditCard matched = creditCardList.stream().filter(each->each.getCardNumber().equals(creditCard.getCardNumber())).findFirst().orElse(null);
         if(matched==null) {
-            logger.log(Level.WARNING,creditCard.getCardNumber()+resourceBundle.getString("card.notExists"));
+           logger.log(Level.WARNING,creditCard.getCardNumber()+resourceBundle.getString("card.notExists"));
             throw new CreditCardException(resourceBundle.getString("card.noMatches"));
         }
         int index=creditCardList.indexOf(matched);
@@ -124,7 +124,7 @@ public class CreditCardFileRepository implements CreditCardRepository {
             throw new CreditCardException(resourceBundle.getString("card.noMatches"));
         }
         writeIntoFile();
-        logger.log(Level.FINE,resourceBundle.getString("card.delete.ok"));
+       logger.log(Level.FINE,resourceBundle.getString("card.delete.ok"));
         System.out.println(resourceBundle.getString("card.delete.ok"));
     }
 }

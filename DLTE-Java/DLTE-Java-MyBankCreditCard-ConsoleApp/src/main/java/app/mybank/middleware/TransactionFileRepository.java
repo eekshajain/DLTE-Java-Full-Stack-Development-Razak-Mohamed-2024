@@ -6,6 +6,7 @@ import app.mybank.entity.Transaction;
 import app.mybank.exceptions.TransactionException;
 import app.mybank.remotes.TransactionRepository;
 
+import java.beans.beancontext.BeanContext;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -175,12 +176,20 @@ public class TransactionFileRepository implements TransactionRepository {
 
     @Override
     public List<Transaction> findAllByDate(Date date) {
-        return null;
+        readFromTransactionFile();
+        List<Transaction> findByDate=transactionList.stream().filter(each->each.getTransactionDate().equals(date)).collect(Collectors.toList());
+        if(findByDate.size()==0)
+            System.out.println(resourceBundle.getString("transaction.empty"));
+        return findByDate;
     }
 
     @Override
     public List<Transaction> findAllByMerchant(Integer merchantId) {
-        return null;
+       readFromTransactionFile();
+       List<Transaction> findAllMerchant=transactionList.stream().filter(each->each.getMerchant().equals(merchantId)).collect(Collectors.toList());
+       if(findAllMerchant.size()==0)
+           System.out.println(resourceBundle.getString("merchant.not.available"));
+       return findAllMerchant;
     }
 
     @Override

@@ -12,6 +12,8 @@ import app.mybank.remotes.StorageTarget;
 import app.mybank.services.CreditCardServices;
 import app.mybank.services.TransactionService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -26,12 +28,14 @@ public class App
     private static ResourceBundle resourceBundle=ResourceBundle.getBundle("application");
     private static Scanner scanner=new Scanner(System.in);
     private static CreditCard creditCard;
-    public static void main( String[] args )
-    {
-//        storageTarget=new FileStorageTarget();
-        storageTarget=new DatabaseTarget();
+    public static void main( String[] args ) throws ParseException {
+       storageTarget=new FileStorageTarget();
+ //       storageTarget=new DatabaseTarget();
         services=new CreditCardServices(storageTarget);
         System.out.println(resourceBundle.getString("app.greet"));
+     //   CreditCard creditCard=new CreditCard(12345678L,123,new Date("2/3/2027"),50000,15000,35000,1234,true,"Eeksha");
+        CreditCard creditCard=new CreditCard(12345678L,123,new Date("2/3/2027"),50000,15000,35000,1234,true,"Eeksha");
+      //  services.callSave(creditCard);
         loggingIn();
         if(creditCard==null) {
             return;
@@ -77,7 +81,7 @@ public class App
                         System.out.println("Enter the Transaction details such as merchant name,id,amount");
                         Transaction transaction=new Transaction();
                         transaction.setTransactionDoneBy(creditCard.getCardNumber());
-                        transaction.setTransactionDate(new Date());
+                        transaction.setTransactionDate(new Date(scanner.next()));
                         String nameOfTheMerchant= scanner.next();
                         transaction.setMerchant(scanner.nextInt());
                         transaction.setTransactionAmount(scanner.nextDouble());
@@ -102,6 +106,23 @@ public class App
                         }
                         break;
                     case 5:
+                        System.out.println("Enter date");
+                         Date date=new Date(scanner.next());
+                         try{
+                             System.out.println(transactionService.callFindAllByDate(date));
+                         }catch (TransactionException transactionException){
+                             System.out.println(transactionException);
+                         }
+                        break;
+                    case 6:
+                        System.out.println("Find Merchant By given ID");
+                        try{
+                            System.out.println(transactionService.callFindMerchantByID(scanner.nextInt()));
+                        }catch (TransactionException transactionException){
+                            System.out.println(transactionException);
+                        }
+                        break;
+                    case 7:
                         System.out.println("Handover the card");
                         creditCard.setCardStatus(false);
                         try{
